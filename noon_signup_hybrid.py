@@ -1,65 +1,23 @@
 import os
 import sys
+import time
+import json
+import uuid
+import random
+import re
 import subprocess
+from curl_cffi import requests
+from playwright.sync_api import sync_playwright
 
-def install_and_import_dependencies():
-    required_packages = {
-        "playwright": "playwright>=1.40.0",
-        "curl_cffi": "curl_cffi>=0.6.0"
-    }
-    
-    missing_packages = []
-    
-    # Check curl_cffi
-    try:
-        import curl_cffi
-    except ImportError:
-        missing_packages.append(required_packages["curl_cffi"])
-        
-    # Check playwright
-    try:
-        import playwright
-    except ImportError:
-        missing_packages.append(required_packages["playwright"])
-        
-    if missing_packages:
-        print("[*] Missing required packages detected. Installing automatically...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            subprocess.check_call([sys.executable, "-m", "pip", "install"] + missing_packages)
-            print("[*] Packages installed successfully.")
-        except Exception as e:
-            print(f"[ERROR] Failed to install packages automatically: {e}")
-            print("[*] Please run: pip install playwright curl_cffi")
-            sys.exit(1)
-            
-        if "playwright" in "".join(missing_packages).lower():
-            print("[*] Initializing Playwright browser binaries...")
-            try:
-                subprocess.check_call([sys.executable, "-m", "playwright", "install", "chromium"])
-                print("[*] Playwright initialized successfully.")
-            except Exception as e:
-                print(f"[ERROR] Failed to install Playwright browser binaries: {e}")
-                print("[*] Please run: playwright install chromium")
-                sys.exit(1)
+from msi_api import MSIApiClient
+from expressvpn_manager import rotate_vpn, is_vpn_connected, get_vpn_status
 
-# Run dependency check before importing other libraries
-install_and_import_dependencies()
-
+# Auto-update from GitHub
 try:
     from updater import check_for_updates
     check_for_updates()
 except Exception:
     pass
-
-import time
-import json
-import uuid
-import random
-from curl_cffi import requests
-from playwright.sync_api import sync_playwright
-from msi_api import MSIApiClient
-from expressvpn_manager import rotate_vpn, is_vpn_connected, get_vpn_status
 
 # reCAPTCHA Enterprise Site Key for Noon
 RECAPTCHA_KEY = "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
@@ -141,28 +99,6 @@ def sync_cookies_to_playwright(session, context):
     except Exception as e:
         print(f"Cookie sync back error: {e}")
 
-def human_click_element(page, loc):
-    try:
-        loc.scroll_into_view_if_needed()
-        box = loc.bounding_box()
-        if box:
-            x = box['x'] + box['width'] / 2 + random.uniform(-2, 2)
-            y = box['y'] + box['height'] / 2 + random.uniform(-2, 2)
-            page.mouse.move(x, y, steps=random.randint(15, 25))
-            time.sleep(random.uniform(0.15, 0.35))
-            page.mouse.down()
-            time.sleep(random.uniform(0.08, 0.15))
-            page.mouse.up()
-            time.sleep(random.uniform(0.15, 0.25))
-            return True
-    except Exception:
-        pass
-    try:
-        loc.click(force=True)
-        return True
-    except Exception:
-        return False
-
 def human_click(page, selectors, timeout=5000):
     if isinstance(selectors, str):
         selectors = [selectors]
@@ -174,14 +110,12 @@ def human_click(page, selectors, timeout=5000):
             if box:
                 x = box['x'] + box['width']/2 + random.uniform(-2, 2)
                 y = box['y'] + box['height']/2 + random.uniform(-2, 2)
-                # Simulate human mouse movement
                 page.mouse.move(x, y, steps=random.randint(15, 25))
                 time.sleep(random.uniform(0.1, 0.3))
                 page.mouse.click(x, y)
                 return True
         except Exception:
             continue
-    # Fallback to direct page click if bounding box fails
     for selector in selectors:
         try:
             page.click(selector, timeout=timeout, force=True)
@@ -193,12 +127,10 @@ def human_click(page, selectors, timeout=5000):
 def human_type(page, selectors, text, timeout=5000):
     if isinstance(selectors, str):
         selectors = [selectors]
-    # Focus input first
     if not human_click(page, selectors, timeout):
         return False
     time.sleep(random.uniform(0.2, 0.4))
     
-    # Get active locator to fill and type
     loc = None
     for selector in selectors:
         try:
@@ -225,9 +157,8 @@ def human_type(page, selectors, text, timeout=5000):
 def cleanup_chrome_and_profile(profile_dir):
     """Kills any active Chrome processes and completely wipes the session profile folder."""
     try:
-        import subprocess
         subprocess.run("taskkill /f /im chrome.exe", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        time.sleep(1.5)
+        time.sleep(1)
     except Exception:
         pass
         
@@ -239,13 +170,9 @@ def cleanup_chrome_and_profile(profile_dir):
                 break
             except Exception:
                 time.sleep(1)
-        if os.path.exists(profile_dir):
-            print("    [WARNING] Could not fully remove profile folder. Some files may be locked.")
-        else:
-            print("    ✅ Complete Wipe: Deleted old Chrome session, cookies, cache & local storage.")
 
 def save_account_record(email, password, phone, filename="created_accounts.txt"):
-    """Saves created account credentials to text file."""
+    """Appends newly verified account to created_accounts.txt."""
     try:
         now_str = time.strftime("%Y-%m-%d %H:%M:%S")
         with open(filename, "a", encoding="utf-8") as f:
@@ -297,7 +224,7 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
 
     profile_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hybrid_profile")
     
-    # 1. Complete cleanup before starting this session
+    # Clean profile before session
     print("[0] Performing complete browser wipe & clearing all old cookies/cache...")
     cleanup_chrome_and_profile(profile_dir)
     os.makedirs(profile_dir, exist_ok=True)
@@ -307,7 +234,6 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
     playwright_instance = None
     
     try:
-        import subprocess
         playwright_instance = sync_playwright().start()
         chrome_port = 9222
         print(f"[1] Starting clean Google Chrome instance on port {chrome_port}...")
@@ -326,7 +252,6 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
             "--no-first-run",
             "--no-default-browser-check",
             "--disable-blink-features=AutomationControlled",
-            "--disable-infobars",
             "--lang=en-US",
             "--accept-lang=en-US,en"
         ]
@@ -343,43 +268,10 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 time.sleep(1)
 
         if not browser or not browser.contexts:
-            print(f"[ERROR] Could not connect to Chrome on port {chrome_port} after retries. Retrying session...")
+            print(f"[ERROR] Could not connect to Chrome on port {chrome_port}. Retrying session...")
             return ("RETRY_SAME_NUMBER", full_phone, phone_number)
             
         context = browser.contexts[0]
-        
-        # Inject anti-detection stealth overrides into all pages & tabs
-        context.add_init_script("""
-            // 1. Hide navigator.webdriver from Akamai Bot Manager
-            Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-            });
-            
-            // 2. Mock full Chrome runtime
-            window.chrome = {
-                runtime: {},
-                loadTimes: function() {},
-                csi: function() {},
-                app: {}
-            };
-            
-            // 3. Mock plugins & languages
-            Object.defineProperty(navigator, 'plugins', {
-                get: () => [1, 2, 3, 4, 5]
-            });
-            Object.defineProperty(navigator, 'languages', {
-                get: () => ['en-US', 'en']
-            });
-            
-            // 4. Mock permissions
-            const originalQuery = window.navigator.permissions.query;
-            window.navigator.permissions.query = (parameters) => (
-                parameters.name === 'notifications' ?
-                    Promise.resolve({ state: Notification.permission }) :
-                    originalQuery(parameters)
-            );
-        """)
-        
         page = context.pages[0] if context.pages else context.new_page()
         
         try:
@@ -623,7 +515,7 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
             # Check if SMS button appeared
             sms_btn = page.locator('button:has-text("SMS"):visible, [role="button"]:has-text("SMS"):visible').first
             try:
-                sms_btn.wait_for(state="visible", timeout=6000)
+                sms_btn.wait_for(state="visible", timeout=7000)
                 # Success, SMS modal loaded!
                 break
             except Exception:
@@ -649,151 +541,66 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 rotate_vpn()
                 return ("RETRY_SAME_NUMBER", full_phone, phone_number)
 
-        # Prepare formatted phone string for Noon API
-        if target_country == "egypt":
-            clean_digits = phone_number.lstrip("0")
-            phone_api_format = f"+20-{clean_digits[:2]}-{clean_digits[2:]}"
-        else:
-            phone_api_format = f"+223-{phone_number}"
-
-        print(f"\n[9] Waiting for SMS 1 button countdown timer to expire...")
+        # Exact proven SMS 1 & SMS 2 flow from backup
+        print("\n[9] Waiting for verification modal & clicking SMS 1 button...")
         try:
-            # Monitor live countdown text on the SMS button (e.g. "SMS (15s)" -> "SMS")
+            print("    Waiting for SMS 1 button to become enabled (cooldown)...")
             start_time = time.time()
-            last_text = ""
-            while time.time() - start_time < 40:
-                try:
-                    btn_text = sms_btn.inner_text().strip()
-                    disabled_prop = sms_btn.is_disabled()
-                    aria_disabled = sms_btn.get_attribute("aria-disabled")
+            is_enabled = False
+            last_print = 0
+            while time.time() - start_time < 35:
+                disabled_prop = sms_btn.is_disabled()
+                aria_disabled = sms_btn.get_attribute("aria-disabled")
+                
+                if not disabled_prop and aria_disabled != "true":
+                    is_enabled = True
+                    break
                     
-                    digits = re.findall(r'\d+', btn_text)
-                    if btn_text != last_text:
-                        print(f"      [SMS 1 Timer]: '{btn_text}' (disabled={disabled_prop}, aria={aria_disabled})")
-                        last_text = btn_text
-                        
-                    # When no countdown digits remain and button is not disabled
-                    if not digits and not disabled_prop and aria_disabled != "true":
-                        print(f"    ✅ SMS 1 Cooldown expired! Active button text: '{btn_text}'")
-                        break
-                except Exception:
-                    pass
-                time.sleep(0.8)
-
-            print("    🚀 Triggering SMS 1 click and in-page dispatch...")
-            # 1. Native human mouse click on active button
-            human_click_element(page, sms_btn)
+                if time.time() - last_print > 3:
+                    print(f"      [Status] disabled={disabled_prop}, aria-disabled={aria_disabled}")
+                    last_print = time.time()
+                    
+                time.sleep(0.5)
+                
+            if is_enabled:
+                print(f"    SMS 1 button became enabled after {int(time.time() - start_time)} seconds.")
+            else:
+                print("    [WARNING] SMS 1 button did not report 'enabled' state. Attempting click anyway...")
+                
             time.sleep(0.5)
-            
-            # 2. In-page JavaScript click & fetch trigger
-            try:
-                page.evaluate("""() => {
-                    const btns = Array.from(document.querySelectorAll('button'));
-                    const s = btns.find(b => b.textContent && b.textContent.includes('SMS'));
-                    if (s) { s.click(); }
-                }""")
-            except Exception:
-                pass
+            sms_btn.click(timeout=5000)
+            print("📩 [SUCCESS] Clicked SMS 1 button in browser UI!")
 
-            # 3. Direct authenticated API dispatch
-            sync_cookies_to_curl(context, session)
-            token_sms1 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
-            
-            payload_sms1 = {
-                "phone": phone_api_format,
-                "isPrimary": True,
-                "otpChannel": "sms",
-                "recaptcha": {
-                    "token": token_sms1,
-                    "action": "primary_phone_send_otp",
-                    "key": RECAPTCHA_KEY
-                }
-            }
-            headers_otp = {
-                "content-type": "application/json",
-                "x-locale": "en-eg",
-                "x-platform": "web",
-                "x-visitor-id": visitor_id,
-                "origin": "https://account.noon.com",
-                "referer": "https://account.noon.com/egypt-en/profile/"
-            }
-            try:
-                resp_sms1 = session.post(
-                    "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
-                    json=payload_sms1,
-                    headers=headers_otp,
-                    timeout=10
-                )
-                print(f"    📡 [Noon SMS 1 API]: Status {resp_sms1.status_code} | {resp_sms1.text[:120]}")
-            except Exception as e:
-                print(f"    [Notice] Direct API call note: {e}")
-
-            print("📩 [SUCCESS] SMS 1 Dispatched! Waiting for SMS 2 cooldown...")
-            time.sleep(3)
-
-            # Wait for SMS 2 countdown timer
-            print("\n[10] Waiting for SMS 2 button countdown timer to expire...")
+            # Wait for SMS 2 cooldown
+            print("\n[10] Waiting for SMS 2 button to become enabled (cooldown)...")
+            time.sleep(2)  # Pause to allow state to register
             start_time = time.time()
-            last_text = ""
-            # Wait for button text to show new timer and then count down to 0
-            while time.time() - start_time < 50:
-                try:
-                    btn_text = sms_btn.inner_text().strip()
-                    disabled_prop = sms_btn.is_disabled()
-                    aria_disabled = sms_btn.get_attribute("aria-disabled")
+            is_enabled_2 = False
+            last_print = 0
+            while time.time() - start_time < 45:
+                disabled_prop = sms_btn.is_disabled()
+                aria_disabled = sms_btn.get_attribute("aria-disabled")
+                
+                if not disabled_prop and aria_disabled != "true":
+                    is_enabled_2 = True
+                    break
                     
-                    digits = re.findall(r'\d+', btn_text)
-                    if btn_text != last_text:
-                        print(f"      [SMS 2 Timer]: '{btn_text}' (disabled={disabled_prop}, aria={aria_disabled})")
-                        last_text = btn_text
-                        
-                    if (time.time() - start_time > 4) and not digits and not disabled_prop and aria_disabled != "true":
-                        print(f"    ✅ SMS 2 Cooldown expired! Active button text: '{btn_text}'")
-                        break
-                except Exception:
-                    pass
-                time.sleep(0.8)
-
-            print("    🚀 Triggering SMS 2 click and in-page dispatch...")
-            # 1. Native human click
-            human_click_element(page, sms_btn)
+                if time.time() - last_print > 3:
+                    print(f"      [Status] disabled={disabled_prop}, aria-disabled={aria_disabled}")
+                    last_print = time.time()
+                    
+                time.sleep(0.5)
+                
+            if is_enabled_2:
+                print(f"    SMS 2 button became enabled after {int(time.time() - start_time)} seconds.")
+            else:
+                print("    [WARNING] SMS 2 button did not report 'enabled' state. Attempting click anyway...")
+                
             time.sleep(0.5)
+            sms_btn.click(timeout=5000)
+            print("📩 [SUCCESS] Clicked SMS 2 button in browser UI! [COMPLETED 2/2 SMS]")
             
-            # 2. In-page JavaScript click
-            try:
-                page.evaluate("""() => {
-                    const btns = Array.from(document.querySelectorAll('button'));
-                    const s = btns.find(b => b.textContent && b.textContent.includes('SMS'));
-                    if (s) { s.click(); }
-                }""")
-            except Exception:
-                pass
-
-            # 3. Direct API dispatch for SMS 2
-            sync_cookies_to_curl(context, session)
-            token_sms2 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
-            payload_sms2 = {
-                "phone": phone_api_format,
-                "isPrimary": True,
-                "otpChannel": "sms",
-                "recaptcha": {
-                    "token": token_sms2,
-                    "action": "primary_phone_send_otp",
-                    "key": RECAPTCHA_KEY
-                }
-            }
-            try:
-                resp_sms2 = session.post(
-                    "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
-                    json=payload_sms2,
-                    headers=headers_otp,
-                    timeout=10
-                )
-                print(f"    📡 [Noon SMS 2 API]: Status {resp_sms2.status_code} | {resp_sms2.text[:120]}")
-            except Exception as e:
-                print(f"    [Notice] Direct API call note: {e}")
-
-            print("📩 [SUCCESS] SMS 2 Dispatched! [COMPLETED 2/2 SMS]")
+            # Keep session open for 5s so network requests finish cleanly
             time.sleep(5)
 
             # Mark number as used only after both SMS succeed
@@ -929,6 +736,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
