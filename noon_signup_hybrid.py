@@ -232,7 +232,7 @@ def save_account_record(email, password, phone, filename="created_accounts.txt")
     except Exception as e:
         print(f"[WARNING] Could not save account record: {e}")
 
-def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, assigned_phone=None):
+def run_single_signup_session(mode_choice="1", target_country="mali", msi_client=None, session_num=1, assigned_phone=None):
     print("\n" + "=" * 65)
     print(f"      🚀 STARTING FRESH NOON SIGNUP SESSION #{session_num}")
     print("=" * 65)
@@ -240,42 +240,30 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
     # 0. Determine Phone Number
     full_phone = ""
     phone_number = ""
-    choice = "2"  # Default Mali
+    country_prefix = "+223" if target_country == "mali" else "+20"
     
     if assigned_phone:
         full_phone, phone_number = assigned_phone
-        print(f"🔄 [RETRYING EXISTING NUMBER] Keeping: +223 {phone_number} (Full: {full_phone})")
+        print(f"🔄 [RETRYING EXISTING NUMBER] Keeping: {country_prefix} {phone_number} (Full: {full_phone})")
     elif mode_choice == "1":
         if not msi_client:
             msi_client = MSIApiClient()
             msi_client.login()
             
-        print("[MSI] Fetching next available Mali number...")
-        full_num, local_num = msi_client.get_next_mali_number()
+        c_label = "Mali (+223)" if target_country == "mali" else "Egypt (+20)"
+        print(f"[MSI] Fetching next available {c_label} number...")
+        full_num, local_num = msi_client.get_next_number(country=target_country)
         if full_num and local_num:
             full_phone = full_num
             phone_number = local_num
-            print(f"✅ [MSI] Assigned New Mali Number: +223 {phone_number} (Full: {full_phone})")
+            print(f"✅ [MSI] Assigned New {c_label} Number: {country_prefix} {phone_number} (Full: {full_phone})")
         else:
-            print("❌ [MSI] No unused Mali numbers found in account.")
+            print(f"❌ [MSI] No unused {c_label} numbers found in account.")
             return ("EXHAUSTED", None, None)
     elif mode_choice == "2":
-        print("\n" + "=" * 60)
-        print(">>> SELECT COUNTRY:")
-        print(">>> 1. Egypt (+20)")
-        print(">>> 2. Mali (+223)")
-        print("=" * 60)
-        while True:
-            choice = input("Select choice (1 or 2): ").strip()
-            if choice in ["1", "2"]:
-                break
-            print("Invalid choice. Please enter 1 or 2.")
-            
-        phone_number = input("\nEnter phone number: ").strip()
-        if choice == "2":
-            full_phone = "223" + phone_number.replace("+", "").lstrip("0")
-        else:
-            full_phone = "20" + phone_number.replace("+", "").lstrip("0")
+        phone_number = input(f"\nEnter {target_country.title()} phone number: ").strip()
+        code = "223" if target_country == "mali" else "20"
+        full_phone = code + phone_number.replace("+", "").lstrip("0")
 
     email = generate_custom_gmail()
     password = generate_strong_password()
@@ -490,7 +478,7 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
         human_click(page, add_phone_selectors, timeout=5000)
         time.sleep(1.5)
 
-        if choice == "2":
+        if target_country == "mali":
             print("    Selecting Mali (+223) in browser UI (human simulation)...")
             try:
                 trigger_selectors = [
@@ -518,7 +506,7 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
             except Exception as e:
                 print(f"    [WARNING] Failed to select Mali in UI: {e}")
         else:
-            print("    Keeping Egypt (+20) as default.")
+            print("    Using Egypt (+20) as country code.")
             
         sms_btn = None
         # Inner loop to try phone numbers within the SAME already-logged-in session
@@ -559,16 +547,17 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
                 
                 # Fetch next number from MSI and retry immediately in the same modal
                 if mode_choice == "1" and msi_client:
-                    print("🔄 Fetching next available Mali number from MSI...")
-                    next_full, next_local = msi_client.get_next_mali_number()
+                    c_label = "Mali (+223)" if target_country == "mali" else "Egypt (+20)"
+                    print(f"🔄 Fetching next available {c_label} number from MSI...")
+                    next_full, next_local = msi_client.get_next_number(country=target_country)
                     if next_full and next_local:
                         full_phone = next_full
                         phone_number = next_local
-                        print(f"➡️ [MSI] Switched to next number: +223 {phone_number} (Full: {full_phone})")
+                        print(f"➡️ [MSI] Switched to next number: {country_prefix} {phone_number} (Full: {full_phone})")
                         time.sleep(1)
                         continue
                     else:
-                        print("🏁 [MSI] No more Mali numbers available.")
+                        print(f"🏁 [MSI] No more {c_label} numbers available.")
                         return ("EXHAUSTED", None, None)
                 else:
                     phone_number = input("\nPhone number invalid. Enter a new number: ").strip()
@@ -588,11 +577,11 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
                     if msi_client and full_phone:
                         msi_client.mark_number_as_used(full_phone)
                     if mode_choice == "1" and msi_client:
-                        next_full, next_local = msi_client.get_next_mali_number()
+                        next_full, next_local = msi_client.get_next_number(country=target_country)
                         if next_full and next_local:
                             full_phone = next_full
                             phone_number = next_local
-                            print(f"➡️ [MSI] Trying next number: +223 {phone_number}...")
+                            print(f"➡️ [MSI] Trying next number: {country_prefix} {phone_number}...")
                             time.sleep(1)
                             continue
                         else:
@@ -703,11 +692,21 @@ def main():
     print("=" * 65)
     
     print(">>> SELECT PHONE NUMBER SOURCE:")
-    print(">>> 1. 🤖 Automatic from MSI Portal (Mali Numbers + Auto OTP) [Default]")
+    print(">>> 1. 🤖 Automatic from MSI Portal [Default]")
     print(">>> 2. ✍️  Manual Number Entry")
     print("=" * 65)
     
     mode_choice = input("Select mode (1 or 2, default 1): ").strip() or "1"
+    
+    print("\n" + "=" * 65)
+    print(">>> SELECT TARGET COUNTRY:")
+    print(">>> 1. 🇲🇱 Mali (+223) [Default]")
+    print(">>> 2. 🇪🇬 Egypt (+20)")
+    print("=" * 65)
+    
+    country_choice = input("Select country (1 or 2, default 1): ").strip() or "1"
+    target_country = "mali" if country_choice == "1" else "egypt"
+    country_display = "Mali (+223)" if target_country == "mali" else "Egypt (+20)"
     
     msi_client = None
     if mode_choice == "1":
@@ -715,7 +714,10 @@ def main():
         msi_client = MSIApiClient()
         if msi_client.login():
             all_numbers = msi_client.get_my_numbers(limit=500)
-            mali_nums = [n for n in all_numbers if "mali" in str(n.get("range", "")).lower() or str(n.get("prefix", "")) == "223" or str(n.get("number", "")).startswith("223")]
+            if target_country == "mali":
+                filtered_nums = [n for n in all_numbers if "mali" in str(n.get("range", "")).lower() or str(n.get("prefix", "")) == "223" or str(n.get("number", "")).startswith("223")]
+            else:
+                filtered_nums = [n for n in all_numbers if "egypt" in str(n.get("range", "")).lower() or str(n.get("prefix", "")) == "20" or str(n.get("number", "")).startswith("20")]
             
             used = set()
             if os.path.exists("used_numbers.txt"):
@@ -725,8 +727,8 @@ def main():
                 except Exception:
                     pass
                     
-            unused_count = sum(1 for n in mali_nums if str(n.get("number", "")).replace("+", "").strip() not in used)
-            print(f"📊 [MSI] Total Mali Numbers in Account: {len(mali_nums)} | Remaining Unused: {unused_count}")
+            unused_count = sum(1 for n in filtered_nums if str(n.get("number", "")).replace("+", "").strip() not in used)
+            print(f"📊 [MSI] Total {country_display} Numbers in Account: {len(filtered_nums)} | Remaining Unused: {unused_count}")
         else:
             print("[WARNING] MSI login failed. Will fall back to manual mode.")
             mode_choice = "2"
@@ -737,7 +739,7 @@ def main():
     
     if not total_accounts_input:
         target_count = 999999  # Process all remaining numbers until exhausted
-        print("🚀 Mode: Processing ALL remaining unused numbers until exhaustion...")
+        print(f"🚀 Mode: Processing ALL remaining unused {country_display} numbers until exhaustion...")
     else:
         try:
             target_count = int(total_accounts_input)
@@ -751,6 +753,7 @@ def main():
     while session_idx <= target_count:
         status, full_p, local_p = run_single_signup_session(
             mode_choice=mode_choice,
+            target_country=target_country,
             msi_client=msi_client,
             session_num=session_idx,
             assigned_phone=current_phone
@@ -769,7 +772,7 @@ def main():
             current_phone = (full_p, local_p)
             # Do not increment session_idx so it retries the same account target
         elif status == "EXHAUSTED":
-            print("\n🏁 [MSI] All available Mali numbers have been processed and exhausted!")
+            print(f"\n🏁 [MSI] All available {country_display} numbers have been processed and exhausted!")
             break
         else:
             print(f"\n⚠️ Session #{session_idx} ended with error. Moving to next number...")

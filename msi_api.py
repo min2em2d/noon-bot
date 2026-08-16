@@ -116,9 +116,10 @@ class MSIApiClient:
             print(f"❌ Error fetching numbers: {e}")
             return []
 
-    def get_next_mali_number(self, used_file="used_numbers.txt") -> tuple:
+    def get_next_number(self, country: str = "mali", used_file="used_numbers.txt") -> tuple:
         """
-        Returns (full_number, local_number) for the next available Mali (+223) number.
+        Returns (full_number, local_number) for the next available number of the chosen country.
+        Supports 'mali' (+223) and 'egypt' (+20).
         Automatically checks used_numbers.txt to avoid duplicates.
         """
         used_numbers = set()
@@ -133,25 +134,38 @@ class MSIApiClient:
         if not all_numbers:
             return None, None
 
+        target_country = country.lower().strip()
+
         for item in all_numbers:
             num = str(item.get("number", "")).strip()
             range_name = str(item.get("range", "")).lower()
             prefix = str(item.get("prefix", "")).strip()
 
-            # Identify if it's a Mali number (starts with 223 or range says Mali)
-            is_mali = "mali" in range_name or prefix == "223" or num.startswith("223")
-            
-            if is_mali:
-                clean_full = num.replace("+", "")
-                if clean_full not in used_numbers and num not in used_numbers:
-                    # Strip 223 prefix to get the 8-digit local number for Noon
+            clean_full = num.replace("+", "").strip()
+
+            if clean_full in used_numbers or num in used_numbers:
+                continue
+
+            if target_country in ["mali", "223"]:
+                is_match = "mali" in range_name or prefix == "223" or clean_full.startswith("223")
+                if is_match:
                     local_num = clean_full
                     if local_num.startswith("223"):
                         local_num = local_num[3:]
-                    
+                    return clean_full, local_num
+
+            elif target_country in ["egypt", "20", "eg"]:
+                is_match = "egypt" in range_name or prefix == "20" or clean_full.startswith("20")
+                if is_match:
+                    local_num = clean_full
+                    if local_num.startswith("20"):
+                        local_num = local_num[2:]
                     return clean_full, local_num
 
         return None, None
+
+    def get_next_mali_number(self, used_file="used_numbers.txt") -> tuple:
+        return self.get_next_number(country="mali", used_file=used_file)
 
     def mark_number_as_used(self, number: str, used_file="used_numbers.txt"):
         """Saves number to used_numbers.txt so it won't be reused."""
