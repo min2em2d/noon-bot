@@ -154,6 +154,59 @@ def human_type(page, selectors, text, timeout=5000):
         print(f"    [WARNING] Human type failed: {e}")
         return False
 
+def enter_phone_in_ui(page, target_country, local_num):
+    """
+    Correctly fills phone number in Noon UI depending on the country structure.
+    For Egypt: Handles carrier prefix (10, 11, 12, 15) and types the remaining 8 digits.
+    For Mali: Types the full 8-digit local number.
+    """
+    clean = str(local_num).replace("+", "").strip()
+    if clean.startswith("20"):
+        clean = clean[2:]
+    clean = clean.lstrip("0")
+    
+    if target_country == "egypt":
+        if len(clean) == 10 and clean[:2] in ["10", "11", "12", "15"]:
+            carrier_prefix = clean[:2]
+            digits_to_type = clean[2:]
+        elif len(clean) > 8:
+            carrier_prefix = clean[:2]
+            digits_to_type = clean[2:]
+        else:
+            carrier_prefix = "10"
+            digits_to_type = clean
+            
+        print(f"    [Egypt Number] Operator Prefix: [{carrier_prefix}] | Input Digits: [{digits_to_type}]")
+        
+        # Check carrier prefix dropdown in UI
+        try:
+            carrier_btn = page.locator('button:has-text("10"), button:has-text("11"), button:has-text("12"), button:has-text("15")').first
+            if carrier_btn.is_visible():
+                current_prefix = carrier_btn.inner_text().strip()
+                if carrier_prefix != current_prefix and carrier_prefix in ["10", "11", "12", "15"]:
+                    print(f"    Switching Egypt carrier prefix from {current_prefix} to {carrier_prefix}...")
+                    carrier_btn.click()
+                    time.sleep(1)
+                    page.locator(f'#overlay-portal div[role="option"]:has-text("{carrier_prefix}"), div[role="option"]:has-text("{carrier_prefix}")').first.click()
+                    time.sleep(1)
+        except Exception as e:
+            print(f"    [Notice] Carrier select check: {e}")
+            
+        phone_input_selectors = [
+            "input[name='primaryPhone']",
+            "input.PhoneInput-module-scss-module__gXMrQq__input"
+        ]
+        human_type(page, phone_input_selectors, digits_to_type, timeout=5000)
+        
+    else: # Mali
+        digits_to_type = clean
+        print(f"    [Mali Number] Typing 8-digit number: [{digits_to_type}]")
+        phone_input_selectors = [
+            "input[name='primaryPhone']",
+            "input.PhoneInput-module-scss-module__gXMrQq__input"
+        ]
+        human_type(page, phone_input_selectors, digits_to_type, timeout=5000)
+
 def cleanup_chrome_and_profile(profile_dir):
     """Kills any active Chrome processes and completely wipes the session profile folder."""
     try:
@@ -460,13 +513,9 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
         sms_btn = None
         # Inner loop to try phone numbers within the SAME already-logged-in session
         while True:
-            print(f"\n[8] Typing phone number '{phone_number}' in browser UI (human simulation)...")
+            print(f"\n[8] Entering phone number '{phone_number}' in browser UI (human simulation)...")
             try:
-                phone_input_selectors = [
-                    "input[name='primaryPhone']",
-                    "input.PhoneInput-module-scss-module__gXMrQq__input"
-                ]
-                human_type(page, phone_input_selectors, phone_number, timeout=5000)
+                enter_phone_in_ui(page, target_country, phone_number)
                 time.sleep(1)
             except Exception as e:
                 print(f"    [WARNING] Failed to type phone number in UI: {e}")
