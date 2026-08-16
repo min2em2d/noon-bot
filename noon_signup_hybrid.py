@@ -325,6 +325,8 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
             f"--user-data-dir={profile_dir}",
             "--no-first-run",
             "--no-default-browser-check",
+            "--disable-blink-features=AutomationControlled",
+            "--disable-infobars",
             "--lang=en-US",
             "--accept-lang=en-US,en"
         ]
@@ -345,6 +347,39 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
             return ("RETRY_SAME_NUMBER", full_phone, phone_number)
             
         context = browser.contexts[0]
+        
+        # Inject anti-detection stealth overrides into all pages & tabs
+        context.add_init_script("""
+            // 1. Hide navigator.webdriver from Akamai Bot Manager
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+            
+            // 2. Mock full Chrome runtime
+            window.chrome = {
+                runtime: {},
+                loadTimes: function() {},
+                csi: function() {},
+                app: {}
+            };
+            
+            // 3. Mock plugins & languages
+            Object.defineProperty(navigator, 'plugins', {
+                get: () => [1, 2, 3, 4, 5]
+            });
+            Object.defineProperty(navigator, 'languages', {
+                get: () => ['en-US', 'en']
+            });
+            
+            // 4. Mock permissions
+            const originalQuery = window.navigator.permissions.query;
+            window.navigator.permissions.query = (parameters) => (
+                parameters.name === 'notifications' ?
+                    Promise.resolve({ state: Notification.permission }) :
+                    originalQuery(parameters)
+            );
+        """)
+        
         page = context.pages[0] if context.pages else context.new_page()
         
         try:
