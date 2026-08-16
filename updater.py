@@ -2,7 +2,12 @@ import os
 import sys
 import subprocess
 import requests
-import json
+
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 # GitHub repository name for automatic updates
 GITHUB_REPO = "min2em2d/noon-bot"
@@ -15,7 +20,8 @@ TRACKED_FILES = [
     "requirements.txt",
     "START.bat",
     "RUN_BOT.bat",
-    "README.md"
+    "README.md",
+    "updater.py"
 ]
 
 def check_for_updates():
@@ -26,7 +32,7 @@ def check_for_updates():
     if "YOUR_USERNAME" in GITHUB_REPO:
         return
 
-    print("\n🔍 [*] Checking GitHub for latest updates...")
+    print("\n[*] Checking GitHub for latest updates...")
 
     # Method 1: If repository is cloned with git
     if os.path.exists(os.path.join(os.path.dirname(__file__), ".git")):
@@ -41,9 +47,9 @@ def check_for_updates():
             )
             output = (res.stdout or res.stderr).strip()
             if "Already up to date" in output:
-                print("✅ Code is up to date with GitHub.")
+                print("[OK] Code is up to date with GitHub.")
             else:
-                print(f"🚀 [UPDATED] Downloaded latest updates:\n    {output}")
+                print(f"[UPDATED] Downloaded latest updates from GitHub:\n    {output}")
             return
         except Exception:
             pass
@@ -68,15 +74,15 @@ def check_for_updates():
                 if local_content != remote_content:
                     with open(target_path, "wb") as f:
                         f.write(remote_content)
-                    print(f"📥 [UPDATED FILE]: {filename}")
+                    print(f"[UPDATED FILE]: {filename}")
                     updated_any = True
         except Exception:
             pass
 
     if updated_any:
-        print("✅ Successfully updated all files to the latest GitHub version!\n")
+        print("[SUCCESS] Successfully updated all files to the latest GitHub version!\n")
     else:
-        print("✅ You are running the latest version from GitHub.\n")
+        print("[OK] You are running the latest version from GitHub.\n")
 
 if __name__ == "__main__":
     check_for_updates()
