@@ -141,6 +141,28 @@ def sync_cookies_to_playwright(session, context):
     except Exception as e:
         print(f"Cookie sync back error: {e}")
 
+def human_click_element(page, loc):
+    try:
+        loc.scroll_into_view_if_needed()
+        box = loc.bounding_box()
+        if box:
+            x = box['x'] + box['width'] / 2 + random.uniform(-2, 2)
+            y = box['y'] + box['height'] / 2 + random.uniform(-2, 2)
+            page.mouse.move(x, y, steps=random.randint(15, 25))
+            time.sleep(random.uniform(0.15, 0.35))
+            page.mouse.down()
+            time.sleep(random.uniform(0.08, 0.15))
+            page.mouse.up()
+            time.sleep(random.uniform(0.15, 0.25))
+            return True
+    except Exception:
+        pass
+    try:
+        loc.click(force=True)
+        return True
+    except Exception:
+        return False
+
 def human_click(page, selectors, timeout=5000):
     if isinstance(selectors, str):
         selectors = [selectors]
@@ -615,8 +637,10 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 
             if is_enabled:
                 print(f"    SMS 1 button became enabled after {int(time.time() - start_time)} seconds.")
-                sms_btn.click(timeout=5000)
+                human_click_element(page, sms_btn)
                 print("📩 [SUCCESS] Clicked SMS 1 button (SMS 1 Dispatched)!")
+                print("    ⏳ Waiting 4s for network request & SMS gateway transmission...")
+                time.sleep(4)
             else:
                 print(f"⚠️ [SMS DISABLED ON NUMBER] SMS button never enabled for {full_phone} (WhatsApp only / unsupported carrier).")
                 if msi_client and full_phone:
@@ -645,8 +669,10 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 
             if is_enabled_2:
                 print(f"    SMS 2 button became enabled after {int(time.time() - start_time)} seconds.")
-                sms_btn.click(timeout=5000)
+                human_click_element(page, sms_btn)
                 print("📩 [SUCCESS] Clicked SMS 2 button (SMS 2 Dispatched)! [COMPLETED 2/2 SMS]")
+                print("    ⏳ Waiting 6s to guarantee OTP API response transmission before session wipe...")
+                time.sleep(6)
             else:
                 print(f"⚠️ [SMS 2 BUTTON TIMEOUT] SMS 2 button never enabled for {full_phone}.")
                 if msi_client and full_phone:
@@ -658,7 +684,6 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 msi_client.mark_number_as_used(full_phone)
             save_account_record(email, password, full_phone)
             
-            time.sleep(1.5)
             return ("SUCCESS", full_phone, phone_number)
             
         except Exception as err:
