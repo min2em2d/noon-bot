@@ -319,12 +319,23 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
             "--accept-lang=en-US,en"
         ]
         chrome_process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        time.sleep(3)
         
         print("[1.5] Connecting Playwright over CDP...")
-        browser = playwright_instance.chromium.connect_over_cdp(f"http://localhost:{chrome_port}")
+        browser = None
+        for attempt in range(1, 8):
+            try:
+                browser = playwright_instance.chromium.connect_over_cdp(f"http://localhost:{chrome_port}", timeout=4000)
+                if browser:
+                    break
+            except Exception:
+                time.sleep(1)
+
+        if not browser or not browser.contexts:
+            print(f"[ERROR] Could not connect to Chrome on port {chrome_port} after retries. Retrying session...")
+            return ("RETRY_SAME_NUMBER", full_phone, phone_number)
+            
         context = browser.contexts[0]
-        page = context.pages[0]
+        page = context.pages[0] if context.pages else context.new_page()
         
         try:
             page.set_viewport_size({'width': 1200, 'height': 800})
