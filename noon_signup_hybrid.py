@@ -614,10 +614,19 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 rotate_vpn()
                 return ("RETRY_SAME_NUMBER", full_phone, phone_number)
 
-        print("\n[9] Waiting for verification modal & clicking SMS 1 button...")
+        # Prepare formatted phone string for Noon API
+        if target_country == "egypt":
+            clean_digits = phone_number.lstrip("0")
+            phone_api_format = f"+20-{clean_digits[:2]}-{clean_digits[2:]}"
+        else:
+            phone_api_format = f"+223-{phone_number}"
+
+        print(f"\n[9] Sending SMS 1 via Noon /phone/send-otp Gateway...")
         try:
-            # Wait for SMS 1 button to become enabled
-            print("    Waiting for SMS 1 button to become enabled (cooldown)...")
+            # Sync latest browser cookies
+            sync_cookies_to_curl(context, session)
+            
+            # Wait for SMS 1 button / timer in UI
             start_time = time.time()
             is_enabled = False
             last_print = 0
@@ -630,26 +639,60 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                     break
                     
                 if time.time() - last_print > 3:
-                    print(f"      [Status] disabled={disabled_prop}, aria-disabled={aria_disabled}")
+                    print(f"      [Waiting SMS 1 Cooldown] disabled={disabled_prop}, aria-disabled={aria_disabled}")
                     last_print = time.time()
                     
                 time.sleep(0.5)
-                
-            if is_enabled:
-                print(f"    SMS 1 button became enabled after {int(time.time() - start_time)} seconds.")
-                human_click_element(page, sms_btn)
-                print("📩 [SUCCESS] Clicked SMS 1 button (SMS 1 Dispatched)!")
-                print("    ⏳ Waiting 4s for network request & SMS gateway transmission...")
-                time.sleep(4)
-            else:
-                print(f"⚠️ [SMS DISABLED ON NUMBER] SMS button never enabled for {full_phone} (WhatsApp only / unsupported carrier).")
-                if msi_client and full_phone:
-                    msi_client.mark_number_as_used(full_phone)
-                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
+
+            # Generate fresh token for primary_phone_send_otp
+            token_sms1 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
             
+            payload_sms1 = {
+                "phone": phone_api_format,
+                "isPrimary": True,
+                "otpChannel": "sms",
+                "recaptcha": {
+                    "token": token_sms1,
+                    "action": "primary_phone_send_otp",
+                    "key": RECAPTCHA_KEY
+                }
+            }
+            
+            headers_otp = {
+                "content-type": "application/json",
+                "x-locale": "en-eg",
+                "x-platform": "web",
+                "x-visitor-id": visitor_id,
+                "origin": "https://account.noon.com",
+                "referer": "https://account.noon.com/egypt-en/profile/"
+            }
+
+            resp_sms1 = session.post(
+                "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
+                json=payload_sms1,
+                headers=headers_otp,
+                timeout=15
+            )
+            print(f"    📡 [Noon SMS 1 API Response]: Status {resp_sms1.status_code} | {resp_sms1.text[:120]}")
+
+            # Also click UI button for UI state sync
+            try:
+                human_click_element(page, sms_btn)
+            except Exception:
+                pass
+
+            if resp_sms1.status_code == 200:
+                print("📩 [VERIFIED SUCCESS] Noon Gateway Dispatched SMS 1 Successfully!")
+            elif resp_sms1.status_code in [429, 403]:
+                print(f"⚠️ [RATE LIMITED] Rotating ExpressVPN & retrying same number...")
+                rotate_vpn()
+                return ("RETRY_SAME_NUMBER", full_phone, phone_number)
+            else:
+                print(f"⚠️ [NOTICE] Response was {resp_sms1.status_code}. Proceeding to cooldown...")
+
             # Wait for SMS 2 cooldown
-            print("\n[10] Waiting for SMS 2 button to become enabled (cooldown)...")
-            time.sleep(2)  # Initial pause to allow button state to register
+            print("\n[10] Waiting for SMS 2 cooldown...")
+            time.sleep(2)
             start_time = time.time()
             is_enabled_2 = False
             last_print = 0
@@ -662,23 +705,50 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                     break
                     
                 if time.time() - last_print > 3:
-                    print(f"      [Status] disabled={disabled_prop}, aria-disabled={aria_disabled}")
+                    print(f"      [Waiting SMS 2 Cooldown] disabled={disabled_prop}, aria-disabled={aria_disabled}")
                     last_print = time.time()
                     
                 time.sleep(0.5)
-                
-            if is_enabled_2:
-                print(f"    SMS 2 button became enabled after {int(time.time() - start_time)} seconds.")
-                human_click_element(page, sms_btn)
-                print("📩 [SUCCESS] Clicked SMS 2 button (SMS 2 Dispatched)! [COMPLETED 2/2 SMS]")
-                print("    ⏳ Waiting 6s to guarantee OTP API response transmission before session wipe...")
-                time.sleep(6)
-            else:
-                print(f"⚠️ [SMS 2 BUTTON TIMEOUT] SMS 2 button never enabled for {full_phone}.")
-                if msi_client and full_phone:
-                    msi_client.mark_number_as_used(full_phone)
-                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
+
+            # Generate fresh token for SMS 2
+            sync_cookies_to_curl(context, session)
+            token_sms2 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
             
+            payload_sms2 = {
+                "phone": phone_api_format,
+                "isPrimary": True,
+                "otpChannel": "sms",
+                "recaptcha": {
+                    "token": token_sms2,
+                    "action": "primary_phone_send_otp",
+                    "key": RECAPTCHA_KEY
+                }
+            }
+
+            resp_sms2 = session.post(
+                "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
+                json=payload_sms2,
+                headers=headers_otp,
+                timeout=15
+            )
+            print(f"    📡 [Noon SMS 2 API Response]: Status {resp_sms2.status_code} | {resp_sms2.text[:120]}")
+
+            # Also click UI button
+            try:
+                human_click_element(page, sms_btn)
+            except Exception:
+                pass
+
+            if resp_sms2.status_code == 200:
+                print("📩 [VERIFIED SUCCESS] Noon Gateway Dispatched SMS 2 Successfully! [COMPLETED 2/2 SMS]")
+            elif resp_sms2.status_code in [429, 403]:
+                print(f"⚠️ [RATE LIMITED ON SMS 2] Rotating VPN...")
+                rotate_vpn()
+                return ("RETRY_SAME_NUMBER", full_phone, phone_number)
+            
+            # Allow network gateway transmission
+            time.sleep(4)
+
             # Mark number as used only after both SMS succeed
             if msi_client and full_phone:
                 msi_client.mark_number_as_used(full_phone)
