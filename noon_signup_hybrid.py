@@ -615,11 +615,13 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
                 
             if is_enabled:
                 print(f"    SMS 1 button became enabled after {int(time.time() - start_time)} seconds.")
+                sms_btn.click(timeout=5000)
+                print("📩 [SUCCESS] Clicked SMS 1 button (SMS 1 Dispatched)!")
             else:
-                print("    [WARNING] SMS 1 button did not report 'enabled' state. Attempting click anyway...")
-                
-            sms_btn.click(timeout=5000)
-            print("📩 [SUCCESS] Clicked SMS 1 button (SMS 1 Dispatched)!")
+                print(f"⚠️ [SMS DISABLED ON NUMBER] SMS button never enabled for {full_phone} (WhatsApp only / unsupported carrier).")
+                if msi_client and full_phone:
+                    msi_client.mark_number_as_used(full_phone)
+                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
             
             # Wait for SMS 2 cooldown
             print("\n[10] Waiting for SMS 2 button to become enabled (cooldown)...")
@@ -643,11 +645,13 @@ def run_single_signup_session(mode_choice="1", msi_client=None, session_num=1, a
                 
             if is_enabled_2:
                 print(f"    SMS 2 button became enabled after {int(time.time() - start_time)} seconds.")
+                sms_btn.click(timeout=5000)
+                print("📩 [SUCCESS] Clicked SMS 2 button (SMS 2 Dispatched)! [COMPLETED 2/2 SMS]")
             else:
-                print("    [WARNING] SMS 2 button did not report 'enabled' state. Attempting click anyway...")
-                
-            sms_btn.click(timeout=5000)
-            print("📩 [SUCCESS] Clicked SMS 2 button (SMS 2 Dispatched)! [COMPLETED 2/2 SMS]")
+                print(f"⚠️ [SMS 2 BUTTON TIMEOUT] SMS 2 button never enabled for {full_phone}.")
+                if msi_client and full_phone:
+                    msi_client.mark_number_as_used(full_phone)
+                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
             
             # Mark number as used only after both SMS succeed
             if msi_client and full_phone:
@@ -746,6 +750,9 @@ def main():
             print(f"\n✅ Successfully completed 2 SMS for account #{session_idx} on number {full_p}. (Total completed: {created})")
             current_phone = None  # Reset to fetch next number
             session_idx += 1
+        elif status == "SKIP_BAD_NUMBER":
+            print(f"\n⏭️ [SKIPPED BAD NUMBER] Skipped number {full_p} (SMS disabled/unsupported). Proceeding to next number from MSI...")
+            current_phone = None  # Reset to fetch next fresh number from MSI!
         elif status == "RETRY_SAME_NUMBER":
             print(f"\n🔁 [RETRY] Re-attempting session for the SAME number {full_p} on a fresh VPN IP...")
             current_phone = (full_p, local_p)
