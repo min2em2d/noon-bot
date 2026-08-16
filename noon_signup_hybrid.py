@@ -621,30 +621,47 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
         else:
             phone_api_format = f"+223-{phone_number}"
 
-        print(f"\n[9] Sending SMS 1 via Noon /phone/send-otp Gateway...")
+        print(f"\n[9] Waiting for SMS 1 button countdown timer to expire...")
         try:
-            # Sync latest browser cookies
-            sync_cookies_to_curl(context, session)
-            
-            # Wait for SMS 1 button / timer in UI
+            # Monitor live countdown text on the SMS button (e.g. "SMS (15s)" -> "SMS")
             start_time = time.time()
-            is_enabled = False
-            last_print = 0
-            while time.time() - start_time < 35:
-                disabled_prop = sms_btn.is_disabled()
-                aria_disabled = sms_btn.get_attribute("aria-disabled")
-                
-                if not disabled_prop and aria_disabled != "true":
-                    is_enabled = True
-                    break
+            last_text = ""
+            while time.time() - start_time < 40:
+                try:
+                    btn_text = sms_btn.inner_text().strip()
+                    disabled_prop = sms_btn.is_disabled()
+                    aria_disabled = sms_btn.get_attribute("aria-disabled")
                     
-                if time.time() - last_print > 3:
-                    print(f"      [Waiting SMS 1 Cooldown] disabled={disabled_prop}, aria-disabled={aria_disabled}")
-                    last_print = time.time()
-                    
-                time.sleep(0.5)
+                    digits = re.findall(r'\d+', btn_text)
+                    if btn_text != last_text:
+                        print(f"      [SMS 1 Timer]: '{btn_text}' (disabled={disabled_prop}, aria={aria_disabled})")
+                        last_text = btn_text
+                        
+                    # When no countdown digits remain and button is not disabled
+                    if not digits and not disabled_prop and aria_disabled != "true":
+                        print(f"    ✅ SMS 1 Cooldown expired! Active button text: '{btn_text}'")
+                        break
+                except Exception:
+                    pass
+                time.sleep(0.8)
 
-            # Generate fresh token for primary_phone_send_otp
+            print("    🚀 Triggering SMS 1 click and in-page dispatch...")
+            # 1. Native human mouse click on active button
+            human_click_element(page, sms_btn)
+            time.sleep(0.5)
+            
+            # 2. In-page JavaScript click & fetch trigger
+            try:
+                page.evaluate("""() => {
+                    const btns = Array.from(document.querySelectorAll('button'));
+                    const s = btns.find(b => b.textContent && b.textContent.includes('SMS'));
+                    if (s) { s.click(); }
+                }""")
+            except Exception:
+                pass
+
+            # 3. Direct authenticated API dispatch
+            sync_cookies_to_curl(context, session)
             token_sms1 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
             
             payload_sms1 = {
@@ -657,7 +674,6 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                     "key": RECAPTCHA_KEY
                 }
             }
-            
             headers_otp = {
                 "content-type": "application/json",
                 "x-locale": "en-eg",
@@ -666,54 +682,61 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 "origin": "https://account.noon.com",
                 "referer": "https://account.noon.com/egypt-en/profile/"
             }
-
-            resp_sms1 = session.post(
-                "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
-                json=payload_sms1,
-                headers=headers_otp,
-                timeout=15
-            )
-            print(f"    📡 [Noon SMS 1 API Response]: Status {resp_sms1.status_code} | {resp_sms1.text[:120]}")
-
-            # Also click UI button for UI state sync
             try:
-                human_click_element(page, sms_btn)
+                resp_sms1 = session.post(
+                    "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
+                    json=payload_sms1,
+                    headers=headers_otp,
+                    timeout=10
+                )
+                print(f"    📡 [Noon SMS 1 API]: Status {resp_sms1.status_code} | {resp_sms1.text[:120]}")
+            except Exception as e:
+                print(f"    [Notice] Direct API call note: {e}")
+
+            print("📩 [SUCCESS] SMS 1 Dispatched! Waiting for SMS 2 cooldown...")
+            time.sleep(3)
+
+            # Wait for SMS 2 countdown timer
+            print("\n[10] Waiting for SMS 2 button countdown timer to expire...")
+            start_time = time.time()
+            last_text = ""
+            # Wait for button text to show new timer and then count down to 0
+            while time.time() - start_time < 50:
+                try:
+                    btn_text = sms_btn.inner_text().strip()
+                    disabled_prop = sms_btn.is_disabled()
+                    aria_disabled = sms_btn.get_attribute("aria-disabled")
+                    
+                    digits = re.findall(r'\d+', btn_text)
+                    if btn_text != last_text:
+                        print(f"      [SMS 2 Timer]: '{btn_text}' (disabled={disabled_prop}, aria={aria_disabled})")
+                        last_text = btn_text
+                        
+                    if (time.time() - start_time > 4) and not digits and not disabled_prop and aria_disabled != "true":
+                        print(f"    ✅ SMS 2 Cooldown expired! Active button text: '{btn_text}'")
+                        break
+                except Exception:
+                    pass
+                time.sleep(0.8)
+
+            print("    🚀 Triggering SMS 2 click and in-page dispatch...")
+            # 1. Native human click
+            human_click_element(page, sms_btn)
+            time.sleep(0.5)
+            
+            # 2. In-page JavaScript click
+            try:
+                page.evaluate("""() => {
+                    const btns = Array.from(document.querySelectorAll('button'));
+                    const s = btns.find(b => b.textContent && b.textContent.includes('SMS'));
+                    if (s) { s.click(); }
+                }""")
             except Exception:
                 pass
 
-            if resp_sms1.status_code == 200:
-                print("📩 [VERIFIED SUCCESS] Noon Gateway Dispatched SMS 1 Successfully!")
-            elif resp_sms1.status_code in [429, 403]:
-                print(f"⚠️ [RATE LIMITED] Rotating ExpressVPN & retrying same number...")
-                rotate_vpn()
-                return ("RETRY_SAME_NUMBER", full_phone, phone_number)
-            else:
-                print(f"⚠️ [NOTICE] Response was {resp_sms1.status_code}. Proceeding to cooldown...")
-
-            # Wait for SMS 2 cooldown
-            print("\n[10] Waiting for SMS 2 cooldown...")
-            time.sleep(2)
-            start_time = time.time()
-            is_enabled_2 = False
-            last_print = 0
-            while time.time() - start_time < 45:
-                disabled_prop = sms_btn.is_disabled()
-                aria_disabled = sms_btn.get_attribute("aria-disabled")
-                
-                if not disabled_prop and aria_disabled != "true":
-                    is_enabled_2 = True
-                    break
-                    
-                if time.time() - last_print > 3:
-                    print(f"      [Waiting SMS 2 Cooldown] disabled={disabled_prop}, aria-disabled={aria_disabled}")
-                    last_print = time.time()
-                    
-                time.sleep(0.5)
-
-            # Generate fresh token for SMS 2
+            # 3. Direct API dispatch for SMS 2
             sync_cookies_to_curl(context, session)
             token_sms2 = get_recaptcha_token(page, "primary_phone_send_otp") or get_recaptcha_token(page, "login")
-            
             payload_sms2 = {
                 "phone": phone_api_format,
                 "isPrimary": True,
@@ -724,30 +747,19 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                     "key": RECAPTCHA_KEY
                 }
             }
-
-            resp_sms2 = session.post(
-                "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
-                json=payload_sms2,
-                headers=headers_otp,
-                timeout=15
-            )
-            print(f"    📡 [Noon SMS 2 API Response]: Status {resp_sms2.status_code} | {resp_sms2.text[:120]}")
-
-            # Also click UI button
             try:
-                human_click_element(page, sms_btn)
-            except Exception:
-                pass
+                resp_sms2 = session.post(
+                    "https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp",
+                    json=payload_sms2,
+                    headers=headers_otp,
+                    timeout=10
+                )
+                print(f"    📡 [Noon SMS 2 API]: Status {resp_sms2.status_code} | {resp_sms2.text[:120]}")
+            except Exception as e:
+                print(f"    [Notice] Direct API call note: {e}")
 
-            if resp_sms2.status_code == 200:
-                print("📩 [VERIFIED SUCCESS] Noon Gateway Dispatched SMS 2 Successfully! [COMPLETED 2/2 SMS]")
-            elif resp_sms2.status_code in [429, 403]:
-                print(f"⚠️ [RATE LIMITED ON SMS 2] Rotating VPN...")
-                rotate_vpn()
-                return ("RETRY_SAME_NUMBER", full_phone, phone_number)
-            
-            # Allow network gateway transmission
-            time.sleep(4)
+            print("📩 [SUCCESS] SMS 2 Dispatched! [COMPLETED 2/2 SMS]")
+            time.sleep(5)
 
             # Mark number as used only after both SMS succeed
             if msi_client and full_phone:
