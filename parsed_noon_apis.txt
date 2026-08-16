@@ -1,0 +1,135 @@
+Total entries found in HAR: 78
+================================================================================
+Filtered noon API entries: 15
+================================================================================
+Entry #1: POST https://account.noon.com/_vs/st/mp-identity-api/auth/sign-in
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "emailOrPhone": "fsaasgfsagag@gmail.com",
+  "recaptcha": {
+    "token": "0cAFcWeA7NcGDDOtjlXVONzlQ6ytwMoik4aMCD67TeYpxp7RhOnQRKaXSX2MNOl8svRfKMGQvnLwo2L4Q7-HnHEEBbMtCVCA7BtL_lcuRHRJpcoCo64oc6dzSEZ8ZtzzDr7ttIC9R7qsS5dN8bUIjzA43Zt3svsalOda6ttxat8Th2jiodOmpbAvMxJqSk1HyOpMxI6VzLaFimG4u655rh6GF_TPFlrex-hV1rbel1GUV6Iqun1JellSVuISmStBbx9_yj1l03uzVzN73KgTOaHqljzSS1dQVWrDuYyMEaZKn0X6Qzh6jiIOCTWenl7OPk-bPDsdvwQR-6_pjDUO5lmug273NI1rXGqQLo45iJlKzVYhIXpd4EVjleBo6TaasDY84Zhke--vvU3B4SigsE_XeohfbipMuyRO5-wn6xLlmnNrvZP3HAKt3CJsdti6AGIBryahZkFpylhFsVIdcQgaa4WtOwfu92WWkWOaPqu8CfowO-Rw2pDyWJKYOIy_zF32tBlXsOuAJkOisqvp5SuEg5vhWS-WHbaBb4eGPF4pCUggfA9fuBEOL7B7Aw3RXmnYcx7ewgKovgtT2xW5QXw2WxDnnn1jiSx9Jj5M--1Yfbe0RbT_GVv9Vpb_dhDseSsk5DCx3NxNMb2G9toF1T8GClTOxLrGXUyIYmIIbHmR3Fs0z5YTjJUemh6oBVeqMyxcIuamZ54wcwtL6jA6AlTbdrXu0s2-LROiJEisl1LoDviRLjX1puDj6eRArIc9Vgi9VZtWTolBDN1ZtReLBTv6TG5cvMENf_hUBFpNk068nKEw57kTaW67rublTqA2aDM4nc6Ahwyal1aZvbOPUgg0Jgo6hwyah4_vE3TKX5J6VaD187CUqxLTxx5PbDmkn_HljO3Fsx4Q6UAE7DaYRZzeY1d8QYL3Zbl92UIN8TSHcEdlkKo0t34v7oUrF1VTLriGBoMiJDghz--_A6TubkHhsYteySpd7x2YS4pCmkf0gw6P0guCNFlNga7iIJcbnojYaSBqJY38kWlyQjCTFh20NwEGH345MeFhks27LHsvyNnQvEwGVQJ7PTyLF-zk1cKwECb2LNejiywc_jeU0Pj7_ksZ29pCCWbQh4ntse5he3wY5mmILdyVEo0HBcEuxx_fYNUb_IHrJg6_hCnGsMjEEHv5MlB-C_F-tAAkoXQjxGDcD7ospERObuzpDh3yajRwbECaC33gnUh12nyWxqdfE5Qo-d3TV4ISWQoPP6sX05CM4iQLeTIG8kZ1HUEhANBBlAOYQDbGIOKztctFawikFblMnpxmh1zT4_6V-3bb1NforFG9YiInFqwr-WqTDkil9XsUwWFLDpXAxktodwXIx3-GodG6E-w1w9uxUhHoDeIkLoIspcSPTtluXVCwk5css5VV3sTyZk5Jl9f0evHGz4k83PWWnyWV0UBXNG2Dlem9QU6p43CXDk8g4GNjZ7dXQ0ruLhYSbAtay6byyb13EzcE4QDvkzY2A2A7zdTdn39-8asmXq-GiM-u5UAthna4BmZYlETSAZQ_teJich3yljG2cETiatTpmjbf0saEwIhQkrqPzOaz9P8__K11iqx60Kn1voXliLOwtA-2qOWb8f_lZxNZ92GcmU_D-l1hTp3xcTqNWgU0YMnyueUr9tSPa7gIEttjUH39_OkDAb7zlRMdnlp-g07ESkSNE-s6ITw1P1wwserULluQmNKewsYXotkcykES5mS8_pHDcuAYdGUSQB_kDWVQjUfK34B3-TSqGgeR4WdDQ394LaQMv12djfDUWWsfSDpwvWcQR9jdsgarADW0UoNaNyzGapjNc6s4chYqHyeJcayBu-fr9o0uvT6DCaS-34Y2S2TirFHBEUY_jYZgL5Wst0V10JH97soFgfC4RE6aQUnJwEzrihlvV6cOekpK5aFaQdP4C1GXTuYjERKTt5e6q_gaj34IRFLF1Ofcw6KqYRvDoVNTTr1ZWoTA7-7jvHKSNoToz8oUwmnrv_3WE_gzW-hC_9gBrwYR2jxyCE4VV_86hheF15Wk48aF9gsOPhZcZSGer5w_E4657LKfqdRQOLsVqNVytpBaNNzuCaYmLxh1R2nUL8tI3v-I3c0W3K-VANZhiYxEk-gbuNZc0UeHSxLHFN3Jq4tPMDDOESzrJoc4qVnJ95WA0seD-0aXQ4oas0phLerqOUjPxBosjY8kpyDvoKj8O9RTou6lmYQdI",
+    "action": "login",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  }
+}
+   Response (JSON): {"isNewUser": true, "refType": "email", "isEligiblePasswordSignIn": false, "otpMethodNote": null, "otpCoolDownTimer": 15, "otpLength": 6, "usedChannels": [{"id": "email", "displayText": "Email"}], "nextAttemptChannels": [{"id": "email", "displayText": "Email"}]}
+--------------------------------------------------------------------------------
+Entry #2: POST https://account.noon.com/_vs/st/mp-identity-api/auth/sign-in-with-password
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "email": "fsaasgfsagag@gmail.com",
+  "password": "01223456menA@",
+  "recaptcha": {
+    "token": "0cAFcWeA6tNtfgKO2p-G8k2j4adIwOeaj6iApxULAlL7EdcOOu8o0TR0nauSa00Ex8uxdEj_TEcZQhKVeuL2l0mvatn1UQXc6iNyGH9CQY0kWsWTA56TX2ZHE-eiSHF7r3D2fbMttCXnthizvKYO90H8pcMReqaytAV4udBQc3pzvM4ewNB_OWTVgwEEKzorW36CM2Db7Hdchzn9mnFNEWk6OFI146iJxEQSmjFEWZ2hlIQdd8HJ5QmDwDKjqc8RDsBUinlJIugM6EOUxCf0aSJamnR2-R7q2luPy_7yremPVPOkjKG_xpWDvwFQrw50CSWhjxc0B39PXwKZ1GmPhLcufwGWTYbRb3Uu3Tt7EwQg3oxxix0p3E-rwyP2X7GQAgAFj7AlmmRC-MlFxdMZImlkwl_i8n1VeIBmmB4oiGUYzDj4pnO3FQC0fA-5vJS6tJWtbs7DFJVvrdVlgLX8m73dp5WlzgoltpxQiGxAXFuv-bjuA6TWLC2cMQTKsuYYgrJ8GPVzYtz_yBrne0g97GES6cHhWhtNRanTQPeICBk_bq89_Qek19m2-TNK7tlEoeOnyPtGsivcq8tBOjHvKUrmI2ELfotrK5wQsB-3MQjRajPH1jv_eCTOt7dKz3b0erN_pjXD4Z8mQvHLU0eVNLXzMyjWQ9Sgpc6hzPOtHUhaUuKwk4A7VhkCgPFClMlEfuOfcA2RuZEi-2-OZWOQeiNMCbDTeWBnh81kTt7uyxHl_XhUZrsBxoEaYRZOjuJAYcBu4Hwx9_wDKnXh_ueHwxNzL1mHTgPru3GWlyrwyF-ngIqPkM0wUxhRH1k7OQPdJmHwrfCOKtcVCoAnIIqq9uk4afL2DyfeYWp1gZIg2Dzco56qG245GM0akchKv1x0fgtX0JJLWbzNxd7YVw6UVom4w5Ihzc2R-oMw10fiym6xh6ETHlPAE8TIuIqAtrYCZpBCyw1AmM-6OEYro-NSLi-0CHeFP-YJAKWFZHW_VpwVcH6blIZO9CqQERl8FLAAujVnHfvPSS8teE-vbdu9-4WEUxqcNA-d_JGtMLG2icIkdVmnZMVl7lCzvWcU7jOmobg4YpSfpqLa9aFrfrleIMnm-86VYvZ44WY1dJCcL4iJXfvpDs85Sn6bZ7beD6P0TsJP46xa7AHrbFiK2xhfzBBnmTd4bUOLxM__lwGI8KCHkaxCZ0fQ9tZ9pYyFi03zo6DWQ9h_0a_IBSBF53No4Q_M7IFMxKiaMw52pak76p6AHB50Lfj-ocDkCBjAnTjxb__1JP-v7qT_TzBi__eYFROOD5HMu4xl5hpJEvEcMoP96PMnwjnlyT_s-j8HCVz3utE7XYM8II2lx_mN7PdBWT4oPKw9mYgEtmLZKLTYkiTgJzXU11GqwpZD0lWHu4k6B8pY5TX5RSARbU_M54yzS4rGn-zDpSU0wFHkQ_RbYrhoViYjAFrbAscYo0z92ASXE9KsbFFMQg2LV6O7c83ZdWFxrjXzArk8geUj2hkDzpLI1c5cHhsuHT5O0uJYIueFDBuMZofY_njt05ZCs_M1_pZ1tNgUS4L-LxkTT4BCv1FUf9yK-FVw-mx2d9jhrWNQt6maq6aw48_qiMgi1GZ60czS96WBzgVR8zAFePuUFeNqEWU4vyUSYwoGaAYR8PlOuvU5pdxKPB3_ckLLHe7vaKRYlo7hzR40yAME_d0pRP6SrwfLoACCRMazJuPPQxl16T_uQoZlE_3zwcot1lDWDiMHmPdzqyBmde1EMXKeCMx-o7JEdz03ZXGboUoVClyae1p92nBBTrnO_GW6xWjvjXI2SMVDpyrHwXAQoRQDDAwheq7Hmd7af3KV8Y2smeqh2ZWCvttzBzIt2TAltxz493gL58idJ48lVynZhxSHJ_nXT5eD_zuoQTOQUb9zO5lwPv9vCEqspL8-oWceE2kIuXfXQcDn8WY65PtIoF6_abrt0JImWdy9LCe7wRLf8fNrzYk-8_pXAyUqSnVRd45h18p8q3w4-osnVx5iOaUTuKc8kIAcatNhWZnYZk35KlZbecmGTll_kYd9uMj1xkmgkpvrvo_KyWAIB7Zs4_l_FEscRjgZPBB0OHj5pDTxccoGVhzBchSjki6b6IU7-A7uHUECK6i56FP9uGUslY_nZVnBTSUkYGNEdjMD7ywXsSDlhAsM5S7F5QDpK15be1otVuxS82Xv2Hf8WZAojM-70aV0IPkrpwPsiZZs8iqrz7D03v4cITHrlhmFp4",
+    "action": "login",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  },
+  "deviceName": "Windows / Chrome"
+}
+   Response (JSON Truncated): {"firstName": "", "lastName": "", "email": "fsaasgfsagag@gmail.com", "id": "01975170-39e7-44f5-b100-f199a5cca3ff", "customerCode": "01975170-39e7-44f5-b100-f199a5cca3ff", "primaryPhoneNumber": null, "primaryPhoneVerifiedAt": null, "hasPassword": true, "sourceMpCode": "noon", "subscriptionKey": "05e5593b0216a5a3c357055e4867d84b", "isActive": true, "languageCode": "en", "joinDate": "2026-08-10", "tags": [], "profileCompletionPercentage": 20, "customerProfile": {"gender": null, "birthDate": null, "...
+--------------------------------------------------------------------------------
+Entry #3: GET https://account.noon.com/_vs/st/st-whoami-api-web/whoami/noon
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON Truncated): {"customer": {"customerCode": "01975170-39e7-44f5-b100-f199a5cca3ff", "email": "fsaasgfsagag@gmail.com", "languageCode": "en", "firstName": "", "lastName": "", "primaryPhoneNumber": null, "primaryUphoneCode": null, "signinKey": "fsaasgfsagag@gmail.com"}, "config": {"country": {"code": "EG", "name": "Egypt", "currencyCode": "EGP", "currencyName": "EGP"}, "defaultLocation": {"name": "Cairo", "lat": 30.0631437, "lng": 31.2205224}, "misc": {"ipCountry": "EG"}}, "experience": {"key": "ecom", "name": ...
+--------------------------------------------------------------------------------
+Entry #4: GET https://account.noon.com/_vs/mp/mp-noon-chat-api-customer/customer/chats?status=active
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON): {"chats": []}
+--------------------------------------------------------------------------------
+Entry #5: GET https://account.noon.com/_vs/st/mp-identity-api/customer/get
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON Truncated): {"firstName": "", "lastName": "", "email": "fsaasgfsagag@gmail.com", "id": "01975170-39e7-44f5-b100-f199a5cca3ff", "customerCode": "01975170-39e7-44f5-b100-f199a5cca3ff", "primaryPhoneNumber": null, "primaryPhoneVerifiedAt": null, "hasPassword": true, "sourceMpCode": "noon", "subscriptionKey": "05e5593b0216a5a3c357055e4867d84b", "isActive": true, "languageCode": "en", "joinDate": "2026-08-10", "tags": [], "profileCompletionPercentage": 20, "customerProfile": {"gender": null, "birthDate": null, "...
+--------------------------------------------------------------------------------
+Entry #6: GET https://account.noon.com/_vs/mp/mp-wishlist-api/wishlist/v2
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON Truncated): {"wishlists": [], "cms": {"type": "static", "data": [{"modules": [{"Usage": "none", "baseUrl": "https://api-app.noon.com", "bgColor": "#FFFFFF", "labels": {"bannerLabels": "{}", "widget_label": "generic_module"}, "moduleHeader": {"externalLink": true, "heading": "h2", "isTruncated": true, "outerSpacing": {"bottom": 0, "top": 0}, "textAlign": "left", "titleText": "Items you previously viewed", "titleTextFontSize": 24, "titleTextFontWeight": "bold"}, "position": "bottom", "productUrl": "/_svc/cata...
+--------------------------------------------------------------------------------
+Entry #7: GET https://account.noon.com/_vs/st/mp-customer-api-noon/customer/addresses
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON): {"data": [], "giftEnabled": false, "selected": null}
+--------------------------------------------------------------------------------
+Entry #8: GET https://account.noon.com/_vs/st/st-payment-api-wallet-public/main
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON): {"totalCredits": {"amount": 0.0, "currency": "EGP", "isNegative": false}, "banner": null, "giftCard": {"isEnabled": true, "icon": ""}, "bankWithdrawSummary": null, "campaign": null}
+--------------------------------------------------------------------------------
+Entry #9: GET https://account.noon.com/_vs/mp/mp-aftersales-api-returnsexternal/return_item/count-pending
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON): {"count": 0}
+--------------------------------------------------------------------------------
+Entry #10: GET https://account.noon.com/_vs/mp/mp-aftersales-api-returnsexternal/return_item/count-pending
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON): {"count": 0}
+--------------------------------------------------------------------------------
+Entry #11: GET https://account.noon.com/_vs/st/mp-identity-api/customer/nationality-countries
+   Response Status: 200
+   Req Headers: {'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Response (JSON Truncated): {"countries": [{"countryCode": "AF", "name": "Afghanistan"}, {"countryCode": "AX", "name": "\u00c5land Islands"}, {"countryCode": "AL", "name": "Albania"}, {"countryCode": "DZ", "name": "Algeria"}, {"countryCode": "AS", "name": "American Samoa"}, {"countryCode": "AD", "name": "Andorra"}, {"countryCode": "AO", "name": "Angola"}, {"countryCode": "AI", "name": "Anguilla"}, {"countryCode": "AQ", "name": "Antarctica"}, {"countryCode": "AG", "name": "Antigua and Barbuda"}, {"countryCode": "AR", "name"...
+--------------------------------------------------------------------------------
+Entry #12: POST https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "phone": "+20-10-30876865",
+  "isPrimary": true,
+  "recaptcha": {
+    "token": "0cAFcWeA76d0ijzFAxoBvR1OXa3KZEYTqItvA4nOl7gEklSH1VtUo7ZONXO7yWrzRO5sMb2hfSb57O1NLa0nHuhKo4oVGRHdGauFU4qRBrbwZCXsTVacsXbFNsuzLgCGBZmoebKyquhZyulkZbNzXqTsNjLGtCktdsRswqTglgXSMdjg1OJxu1hASluKopGbiImi-2sqbVjT5Z3--gohNcdmC0SxEzxBxdBjct5yHUs6hO6dj1XsqdxThnCSejoNouGofhaUuTuDNVauCxIaHVR6xOzCmAi5UJ7nV-bdnFQW9ZM94BmgdooiqcY-y8klSKXvlpbikAXjD9JL6dJyWi6X6-gHx3wsuttHVyjmRDjuCqit-l1mynhgOMeIKb8by0F3DqmKaTRFML_dCm72FVgRWE8ZOWNftsS-g8A6sDmt-23s5IM3wKMW0Xb2QT0CLWnpHJBGpc0h-x6BX2Hw-CD4WqhO5rIkVbWPxdlRcXnmXJ1yXjRyaoGvETGfIjvTkYRfpDigh-KVqFlcaWxk3O-vVFq9hhgkdrdOVNqkdPu_6gUWqp8LsRHWLvyqaj5yXkllwvw0VVbhOqhifu1rY7WAwVKQGTwzm95-7tGi99FiwLIARgmPb_Zq2g42ah17Ul1P5wRpfx2bLFUlZKSGs81mjtairrz0GI7prOKrnOL7ckh6IJGWH3aVK9wJ21VrC6BKElKsCOA2HJhbVXIcIyETjr4dbPCW1B0F__5wvUw5PD7B5UKgLf9KlJZRgNIroXAxfuHOrJq2afsF7Jgm-OPAYodFqBNDl1pdu74ryGjTUX6mI2qk1Psz4ayKSYu6DwGTECiloDHCV6_WugT7Z_H2EHtRGXjGd6Xn6dYpf1srvFAC4_RSr0bElGw1paF1jbWIDg6HlKTDJASS2bTDRAHGw2J2RzXqRaiW2teitvcSPONbGZfpX2Mwq_HsjkaEHaRunniQKLDOmv14oU42jnMvYwsiqB2qSG7sfoPpl1wi-ZSjv4JNpBXVUpL4KdGqO_fTL4wn_60QDhoYIxWqbosCBptbPc0DOEAE_u7WmItSM5btUKLDPD9gGYa6LlwVC7jJsi8XCMMbxgkg6qJ6M18_jsH4s8L9ES_X1_gKHWyUkBv72GIlwVAp4XhQhdzwNStI8z9hbn9_sCjd47Xb1w2vn_PzyHv0spGC5xoLZ5VPA0yzF3R9fjJxhqn958KnXis7HnKKhk47wAmy88GD1KP5H-qX8wOfneoYFSO0Q8bG7FEG9Rn5O9pblUZmEYUhiAMXnJ67fQFmOdquwyVm6mws0dpZOOnvtlQWet2JjNbzYhTK8l_EULUQFl8TSgyuNQL7W-WPl5LMJOLamqKY4m1NktB47EgSmCXRmefVtOuJoi9HS_NCEwMlO-x28KsLN9n65xpmJbBhfDUXwKxCOXEsnsokwiBMiXhOLu8LMkanUZ9Yo3obOncqrmgPhz9WrYG5bNtUCmVuMyvjwaBQGMKQfZdjL4VQUBk23XY1ywG_NHguLhnkALAKfzbYJf3W5KQrcfV7hh_YqUElx5fTYK26CYzvBZ-3JfAX52ZAQ06sqPi0Fr3ndHRxG-MaCFXCkVlleEaPA4zy-ofwtOWm7EnET_khzwwwVY8DyzeBx9SXfPzz6-sbu7hkK7z9HZ6CqqFNB1EwAfOQLWAbIQyEt4zpmlQZ_aVTAtU5Qy20qoVqDLpJcHQjXgCodJ_eYxLjSRP4tw3RsHXKljOgMH0SPltiRof47PCXvfqWCJH8KQieWLbl-dKBciJYLoblV5YbTVEBvvwW45r_OmQnk29FtDma3mLzMCkJ1FdsfW7TKMaxdrq6jO9c0O5aLW8fYtGPhOi__SZf4tuztJO7nA1qA0y0yc9jeZoXBuSKsKNiJMzt6MtQ7GWhRml7yPoGSht7aBza0BX0sWrTgCYdrdvyfSLt0orkTbjxNxVtfPNaK2Zj1kpJosEFfDl2Y3pIYPzFMkWEEi8VEsPtUL2NJCK9iodXMPRFZOBQ0QCusytyXW4q4G4YU-iArKGDCoUpD2roGQBGs97waXw_pIr5Hs11yoph36VbIxqKUPch2u5Pv2cRLyXul9cTWqmMKqBZiBDwNemkQX5-2SBeKDTsonCpkNVnFBxgS2WsTX9BaMaS4MJtvrTnAwyx4h7fIrJ11nD5LXFWu_Mbd4c07glA9Wyae3zoUQn8I1Y5vMPKKEKLGeELFEDLep0Z4r_CA",
+    "action": "primary_phone_send_otp",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  }
+}
+   Response (JSON): {"usedChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp"}], "nextAttemptChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp", "isEnabled": true}, {"id": "sms", "displayText": "SMS", "isEnabled": true}], "otpLength": 6, "remainingAttempts": 9}
+--------------------------------------------------------------------------------
+Entry #13: POST https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "phone": "+20-10-30876865",
+  "isPrimary": true,
+  "otpChannel": "sms",
+  "recaptcha": {
+    "token": "0cAFcWeA7QnrobSoxxyAaxVVlNa1zPxq4vbG5t4s994J81GrGQgjNEvPC8_3X5KCJtpsQMvj3G6kih80PUc1Cq0n62FVLCRtNYCl2A57EgG1ERO5q4CvFfeMHb7EJbihQiNYuHNxUL9tcVxf60z_X7EefSU6H1C_f70Z7DZsTH8E8kztRk2bAsYbGJjbTu2TzA333IjNQ6wXz-ZNNMQ1yH4sBKEmnwvnkg4C5xrXyuyLVPz6KWYY5vR-UxjgF9S4eSxtswgIm7izHax88_tHHHY948YZGRm5rAjSeu-WOhwDpDTwLnp626DQ3YTmq0wJUMOKnoaqqTwmskzqjQxjwr_rfI-6qTP9MMA6VMLXdkh2AgKnhhXxnoNHR0OQHd-XIXcO1wkCgORkYvJsMGvw3vwYSfJOiYnHT5O0G3gxaH5cqLA_J-_8sNF2OeFw0nnE7_pp9hG2iJo8GUo1T7TWPrBqxl596H8qWASigL_PYH88ZWlbvsRGvpSlCBgVB4cbeUfxGH5pLxHK6PYh_2fAlufcrlbh1F1IoxZSAlu66DZLnDITePzl67AFmhyznt36bgfwsXseJGqvTK77WuhGeHXsqvG48eBTHZk6z9RcYrJbZenq_2iUuY7PTned7vjG-liVtBt9kcZt38LYXuELKVX-zZ9h2zsYGWsd6TtRFYLT3Z-a8dWRUY2oqmvQV1iKFevW4IFqwU_QlGRPipk4tzhteSEOWgpF_gXcfckV5XpchM8tykVYe7_oT-vuqRlC3K7cHsXxrD9PI3LNolqG-EiZRSNaEDw3v-Us7Rb4nmAKMgE0DfCYDNYCsn_vNNEfW79uoDpIBm3g2WheSf81FIu1kDi0I4mxQ1CanfS6GOykUj4t-3ahTjMjR8ZzO-gSoz2pNE7-qUeO4fTF9RgjwGwAAXsLolC_P8f4xJj3x5GYPxOBU_8k4f8adGfmguymYO-vOXbtNNvUK-MHIzUTp9BPbP3mP-Vkz2d1PHMTvzQEmLxolIe-PtYFmP1q1PBXswQDw9J_-yfcUZwhoGmYMvwmdlhJ03vQPECxjWJdNa_pSDjdUmrj31T_XdB8jbw3c3OTAI1rfhMv-oLl3b6YdbkG6jKNHk3eR0Akn69GeDDRPIooJ5zICUCFeXR1RvpoibrpSmLBbnBMr1iUeTjW5Nx1CW2ufZi0fcNg2zM2FVLzL2gqt4pYbWZu6IWKj0HESX4D4ZCNbfGhluAUzPj4A_v1aw34ZGLOOAo0ejdCBcDxLrF9Osf9Vpanlo-NSL3abkCQ9LRa7TEQDw9X4FoNUeX9Kz5oZ46r9ucni8ydb1_xwNu9_lrbN9mIVJzk1JGzgSYV90ETRhwROv7hYJpCzotomXYC3LWDNRdTQPGD4nmRX1TknqNWfCzkUBtcKj0Y6h90maxrksiDVB2ADS_VJJVe6Zs3UpM-20OmuhfiVUsKs_bKco8hEb6WExw0PtCj5AqQoNDQnNvTSXRV8FMESJdlH9s-nx7Dgbv5AGmFbqqpHUuUlnvLRLRuEMsOMfO072GX6J4_K3_QpB7Vy2qMFgOO9w4bFTZBOLcISL2wRS2IR1XkkM1DwL8c7aZqhBNLJisTlJbwnY5U3EfljsXNjJbczAKRwYps0zDQJukWsc-y6tRpK8g78nnvHXm9DVx3H8L3C_gSicd6oa6hjHFzu8hHO2I6u-i6c760iWFaEsJJ1-1CB7pkveC4zmZnrwl9Mv6tY2UcPG7NyH5sRrH1cEXEaq-Wrh4M-Vh5tnjP_K-1RiNFEqQ2KJI3hK4F0T5nMvHIK23bO7SzMpXAJ7b0qggjCWwHybwd-WAI69FicCeC8OEpQC__CXz9ylkfdHmsHLr5_DgsS4IpJzU07H0Y72Cpqmzavum9HBD3BI51OIqJxWFw1eLH7z47VdLiu8D36k1l7Tybujr2TUV88kXQ9kkM2pwJgBcKk6hj4yHZpZ1sFZUGS1e79pLnYEtuBL_9RfBIo8oPJck_x8kdejtDTF_5Jj6g3jjk-Isj8y-n3kEhwv1-Q_B878eXKMLx8xwvXe7Tt_HDe0gOoCi_TNzTpCl-xV6RVUle8z_T0pT4lPP4RNryOpnVgF4jU6CpnR8ZSw7s50hFIkvgSn-IajLoddjlqutWdQCklaDDSVcKL_D7R4DJg5H5dc9mKhOHitXYn1Zy17mTXW4rdt3C93ucBK8cEeuy3yxFStNFeq53jFGiOeXKjx2nD6C41IgCM8FfzRazDFsYjvtjVa",
+    "action": "primary_phone_send_otp",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  }
+}
+   Response (JSON): {"usedChannels": [{"id": "sms", "displayText": "SMS"}], "nextAttemptChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp", "isEnabled": true}, {"id": "sms", "displayText": "SMS", "isEnabled": true}], "otpLength": 6, "remainingAttempts": 8}
+--------------------------------------------------------------------------------
+Entry #14: POST https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "phone": "+20-10-30876865",
+  "isPrimary": true,
+  "otpChannel": "sms",
+  "recaptcha": {
+    "token": "0cAFcWeA7iNFCamHouQrgqVA-R2M6Kwtooq2QemCLipdKupO21iLfYN_7u6MX20DUuDf_PMwZ2S47AzmVaz56XAw_eLr1OKvS4Qbn7jB4ADVw92ZVtOpHHgUsRN6Fehv9aqUlJh6lLhf7oBfw4u_Rd8czl1SQ1z_Y1jXtWhhPj4I7UAwVDaxKKdyS7XJDGtQenMpgFLjanWZ04_NTPQQbn1GE_WcizGAf-J6RSYLhJWDElDgxVInxiAQvxsTxvS-mlDGaci-oi9v_G5xcrSqj1_yNtFbDrIXXxZ369WL1-MbmraTzO6sLQq5qTh0wkQ1--OvxNLBOQT4mnj0pX1MOBZTyr3hCAm6LduIFOgmDHm_e2_FGf-YVKF2ZyA5Z4J4xldtxien_r5vzPpBiovmLo3UOuylq3MFq391dlaCxYZyo1H52W0CIwlYAaZFNOuaUoI33zyUvysxMjMch-29QCbKRQCHZru9-Ta1JDDZjWqAM8lAyxLEyLcTFH8xbbWEmOsHK-0BbcioRqpjeRYzcSGEg9BpXzn66_kw997rEiG2VVBpAF_pMJMoPFdQ2-L8-TdVy9m9iZCTpXSItVyF-CzRlblbLqbgZZDOyPlJwZcc7ZASNG_wGkDxm4n3iI-zDtRTzepIv1c99DrXdC8tI6rzNidQQfCxXaXipFZIT73OjULiMy3EY6I_LMoBdyCt_n70gGQ_eHD_rP81pH6k9x9CoytisQcIx8bQsbT0jywCsOD2NvtE3QBBfAHB-6siNDCXPEnwSC-JqGk4fUVrI9RjTMEqBpHhVwsfFtp2dj3xaxdsuwFSUkzh6vjYTFhKi8QWAE-DodDlITn9vO2Zy8VO0WfGarjYllloxiUOrMbG4mOpkBofI_oPrjq_ubAHoYR9bmVc8lACC0i3wmWLE1Sbk-HZeCdAcwMJxP-2ExENOJ2gkBz2mo9u7L6yJs1In0Kv4T16aY3Vje7GU_eSzjkzprqfke6P8g-FnI72wkaZX3T_x4Rp4lNXP0EMRwzVwSvR3MbBnQyAy8oMiYTAOQ6nZyGFpfUNrPFj9XYJABH8xauYAJ7knfsvV-CX_DEAGynm2-WlCSPTwtz2a32VPBeYMT1lA80IzpTiWzN_q7OY7gmzyYW_eKRssUYxj6LGU59xpM-eJPv7OaQCXcyVVMCmd0thH0LO7GiYi7_cC2CmI3cedtkd9qcNqRt_kyifB70MvXqUNfJQzpDrsdvIiSHJJ4NOKaIo_ttxVWVCFkz_ZHOT6uWoNjXI2oe36yS3Hj7UwzewuhwKcYJgKDyAulVuz-0CvAtJTjYsxvhnAL5wZFTKO8oiuFaFRJZxCKtCJELMocEG06JbNspbI2L6p3JqRRbc3QCKP_LEekh1CTb3WV3qyDHOUD0Cnc4uf7wKwTjd0A6InDC4K64IfVp7BtxpFzlDdSQ4A48Qgv9qdSHAonP6HfQSt03C_ZANaRem7bMv9UOVw6Xr0JQonxrcrFcXYiWjeGlUraFjazSR63F2P6q4_p2cTMBONPbimOA7ZN-RdRTt97_0xX9iRzafmzv7W_57TzN8AOY25U5UuJVjLl4o74FLB2yKfC-8yjTDxiNORvJEQ0rVEAiLrV_jNrN0OZ01kQQf0WHcjRGL5tQqQH3-bpNSZcKq-pHIV__Y0o_PYmAn4dBUSfFYJ2HoRxy-AVR9gL5IKSIBKYOgYLId-Dn13R-Iv7k4trAdxeY2A_S2mGeUKIobUTyR0TtdN07WJyxddgCXTWEmXEMXInXqEOJgQiIVWWRLP1pnq9sYk0MkbGV_dQywKn-wFcMqG0HAWZ8qCgLKy6fEYVkIytDuVpSI2U-gLI7Fy3gMOWGENmWegEaEjMpOANz_JMJ3xt71Pxf4mfT6MvRFpqMQcNmgNzBmaxAu6dyCrLIqJ0bZXaeQ6JydCZZ0AccgWvynfN8TFvpt6x8XGHPyVkdpHJee4C1k1PMTJ18_TTinO2snrPpy68ZWgiVT5f9e18RlxAyEwfJGyiZid_92VF5g8HphXXj7waIqVou045Ef7kkDqnrBqtHadKdWtoh4odWCLX3RYUKT4Q1-TxlSU2iaR-q9PGHpUcVhH28zUgoOTmp8pEB2ZS9qBkshZaxTcdmzNc3BUfv6QKKXNVT1UvO3ykNxdlF6bppDSpUrsIas3Ev1mbl0uc-4Ayzc2_nBCcz3B50_erAhlJU5zWD-POVHnEdN2-G36z9cdoY0XfqY7hlDuUk1wS4EyQk-vVUGH9g3nPvB-i_7sjl2Pr7Q",
+    "action": "primary_phone_send_otp",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  }
+}
+   Response (JSON): {"usedChannels": [{"id": "sms", "displayText": "SMS"}], "nextAttemptChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp", "isEnabled": true}, {"id": "sms", "displayText": "SMS", "isEnabled": false}], "otpLength": 6, "remainingAttempts": 7}
+--------------------------------------------------------------------------------
+Entry #15: POST https://account.noon.com/_vs/st/mp-identity-api/phone/send-otp
+   Response Status: 200
+   Req Headers: {'content-type': 'application/json', 'x-locale': 'en-eg', 'x-platform': 'web', 'x-visitor-id': '045e7461-a55c-4e0a-b2db-1e5da1cbd800'}
+   Post Data (JSON): {
+  "phone": "+20-10-15690509",
+  "isPrimary": true,
+  "recaptcha": {
+    "token": "0cAFcWeA4r0JDKkR_nyr-_p1mbNc13PyFzY6Idd9FnUM5YO2XVshOCH80kcmvj8peURrhVVvpe4cAoOyT1TmhVL-In6EzhElhxRKb4Q1t0nKZOK9bUJydg-h6PjOgHTZJj_zzdlUhvhQkbJzHSHLMWQMcOviIBQYgpCsIa0yEcMsimEtE1ELRGAoX9lIo9t7xFO1lqSLreGNyF4ioncP_Sb4JykqYcV-VQLDfxv7My7bSIlSY4ySArdXw8WKsYFU9kqgYzBe2-fXQwEXycI6GFlYZdOMX_kWPN82QD65IvGRLz5XJc6HvL44CIxo9dLystwN6c1tvH779soUQIA2tNooldlTzbe4rqOqnJoJbo2-0cSPjcfdCHipUeMwXb88v44uGFYwZxuSQJwAIBrfQA6rw8RyMFvqcZRLvcWPDlbKziWxAc-fKCE-xgIFrVZUVhSjCzpzUBGLiH3k8m9DFKrOuD2daqrRiJjFf9JLe0iyFtOHPtPdxE9ledZpvUt-P8edJ1BED_2yaffVanka16XSKKiwB3Y8Cvg5QQ-IwsWRPkceOvxLVLyEW4ZVIfGjdRzaieGwpJ0aYVvV5ldcTuejISPFg3KbRSUy4r9aAg7lwlveihM75AaPh9hBdAZ8fMcJXrBF_aTp1ybbS0IJRIkdehliR5Yi-4dMmbJy4YLERDWgYJyFG9TagKJQft9TLGd1lNtvYL-Cu3oEAeytgn04ZB43eUcLZc-ePjeN2Y7AGjeWlIfaKVroOJiLFhQMSC9vHBOTAsXbiOQe1fWiWOw-bLtETrZsZuLSvWfCMhVey8zk6wlw6RtS4xwXfLFUnWrYDDIGgsT5JuHdSdXTDHVNUksV8WmnbWk9MVJD4-efWLury8DrHKfq4WwPFi7lXogE7LYdKwbWIquUPatPot38BIQe52LcZrR-Dt0oZSUlFm6shs6jNylTvJpqXaN_QM7LttSHlbcxWdYlmj9CNHylmZhQEPxmdZHqkzIw_m2J6JYCYfLgA9iwr_UKz2hcR3O4v3-9dVMbdrCIRkDTaZ2sMHVpj2OPWrh4DuV_K-mvap3Py9CGn8lUj_vbdvLaADayS0uIl8_v62OUuX6guJ0SUNEU3dWjHfKnAf9Pc7IOhp-KhRtX4XzKxOXTInqtVqDXWsP33GeGNKEu9cw-4KmL2OS0-acNOsJDxoa7ZqaQ2jXJIFSrDJX_LlGAlI73rpe7NEyTV2d5OgAC88F6QCvIHHGbu3QgsMy8rBIjHColWt6RH_n87zhdE3yeo-miIbLzRJvueBIZ00u5A6c1i52fTYJRSt9DyTl6-wv4I69ufQrrjSmKUmcItwG4hdoZ17Q5ziJS1TV9as2Lu_TV-PKvg1SoldF1AhhM6QRhsV0YueFWFw1lx7Oz8Tw40_hYDgAYHl8CRw86Ng_i7mPckB6qaUOb2AgXB7wyPBR2yqDQu2O6acJ-faaq_adOR16fNDO_cdAjqUnM2SXXD8M3XOaCfOzzrIen_TS4sMQcffKLq2bmve3LpovDXH51tcSadIRZr29SRhqzzywQ0hxa-o-sN8WKlHwIkp1MYMImEkwc2taxN833hWGFVYdIbIK5HQO8iEzLGs1uc_G7K9nZaJsNJXHDdiUEiAa38PFglAe7r8WOX6PrRCB5DaLG7EGTy5Na-YRGgNpN3Cw4No5SB5t5VPNUIDJC9CqN8vmNIiUIYcJy9ZL03F-BhpfMJ7-GsjQiqujPXRXU0BQmHr-sJLEIG5EKBV8mAkIfl9LIsicpUG43mrBRSOPEkQEeLUrdfPOkHSO7403GYUhx7nFRGOiQYqDADLHkXLmMsmwlciH_HNzcrBUHw1LORB1CejACt7ZexR_6-BSZxb8-4YF_xKGf8zRE6S6gITon9vCcCUtafBtBj6W58eQiRh94fsPlgYgU_YknGekKjx38S7o4HS9jK16yW1-DxZpvtjsESZQGR2R-go2aif867Su6x1dOwzdEIX0SsgYHREWsuBDK4Sm4sOJs1ZK61qvkWa81mKQVfjKVl-MeKVWoJJaGf4yhF3s8j9L0Mqse2YTqxrN8QKjKy7BUgR6B5bBuIoaT8SS7YbmEULh4H_ME5q6nMJkt7aDuA8589veXvzVGrGwdeCgMfkg100jCCoyiyvVwX5nJ2sqZvAbU8Pj9JtzfHAbXb3_6ME-i5JHurGvOpcPPTsBHEMhn_oUBO1c3MZWCM_30kZon2wZKXqGQmJfOAFdBARJCqpEttiRThsaADZZGeDTPe8H0ouwxerzaZ0grsOmfeRhM2eK12OHSU",
+    "action": "primary_phone_send_otp",
+    "key": "6Lc3F28qAAAAALqhS6u6ULhid0FfhAQxz0uwVQjC"
+  }
+}
+   Response (JSON): {"usedChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp"}], "nextAttemptChannels": [{"id": "whatsapp_otp", "displayText": "WhatsApp", "isEnabled": true}, {"id": "sms", "displayText": "SMS", "isEnabled": false}], "otpLength": 6, "remainingAttempts": 6}
+--------------------------------------------------------------------------------

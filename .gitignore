@@ -1,0 +1,26 @@
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+venv/
+
+# Browser sessions, profiles & cookies (Sensitive data)
+hybrid_profile/
+hybrid_profile*/
+noon_profile_*/
+test_profile*/
+worker_profile*/
+*.har
+api_capture.json
+login_page_dump.html
+
+# Generated outputs & logs
+created_accounts.txt
+used_numbers.txt
+*.log
+*.png
+
+# Temporary scratch files
+scratch/
