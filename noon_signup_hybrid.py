@@ -564,12 +564,14 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 
             if is_enabled:
                 print(f"    SMS 1 button became enabled after {int(time.time() - start_time)} seconds.")
+                time.sleep(0.5)
+                sms_btn.click(timeout=5000)
+                print("📩 [SUCCESS] Clicked SMS 1 button in browser UI!")
             else:
-                print("    [WARNING] SMS 1 button did not report 'enabled' state. Attempting click anyway...")
-                
-            time.sleep(0.5)
-            sms_btn.click(timeout=5000)
-            print("📩 [SUCCESS] Clicked SMS 1 button in browser UI!")
+                print(f"⚠️ [SMS DISABLED ON NUMBER] SMS button never enabled for {full_phone} (WhatsApp only / unsupported carrier). Skipping number...")
+                if msi_client and full_phone:
+                    msi_client.mark_number_as_used(full_phone)
+                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
 
             # Wait for SMS 2 cooldown
             print("\n[10] Waiting for SMS 2 button to become enabled (cooldown)...")
@@ -593,12 +595,14 @@ def run_single_signup_session(mode_choice="1", target_country="mali", msi_client
                 
             if is_enabled_2:
                 print(f"    SMS 2 button became enabled after {int(time.time() - start_time)} seconds.")
+                time.sleep(0.5)
+                sms_btn.click(timeout=5000)
+                print("📩 [SUCCESS] Clicked SMS 2 button in browser UI! [COMPLETED 2/2 SMS]")
             else:
-                print("    [WARNING] SMS 2 button did not report 'enabled' state. Attempting click anyway...")
-                
-            time.sleep(0.5)
-            sms_btn.click(timeout=5000)
-            print("📩 [SUCCESS] Clicked SMS 2 button in browser UI! [COMPLETED 2/2 SMS]")
+                print(f"⚠️ [SMS 2 TIMEOUT] SMS 2 button never enabled for {full_phone}. Marking number as used & skipping...")
+                if msi_client and full_phone:
+                    msi_client.mark_number_as_used(full_phone)
+                return ("SKIP_BAD_NUMBER", full_phone, phone_number)
             
             # Keep session open for 5s so network requests finish cleanly
             time.sleep(5)
